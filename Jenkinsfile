@@ -34,23 +34,13 @@
 //   }
 //}
 pipeline {
-    agent any
+agent any
+stages {
 
-    stages {
-        stage('Build Stage') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Deploy Stage') {
-            steps {
-                sh '''
-                pm2 delete myapp || true
-                pm2 start app.js --name myapp
-                pm2 save
-                '''
-            }
+    stage('Build Docker Image') {
+        steps {
+            sh 'docker build -t nodeapp:${BUILD_NUMBER} .'
         }
     }
+}
 }
